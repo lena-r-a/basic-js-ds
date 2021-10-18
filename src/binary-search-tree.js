@@ -46,14 +46,60 @@ module.exports = class BinarySearchTree {
     }
   }
 
-  find(/* data */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
-  }
+  find(data) {
+    if (this.first===null) {return null};
+    if (this.first.data===data) {return this.first}
+    else return findData(this.first, data)
 
-  remove(/* data */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+    function findData (currentNode,searchnode) {
+        if (currentNode.data>searchnode) {
+          if (currentNode.left===null) {return null}
+          if(currentNode.left.data===searchnode){return currentNode.left} else {return findData(currentNode.left,searchnode)}
+        }
+        else {
+          if (currentNode.right===null) {return null}
+          if(currentNode.right.data===searchnode){return currentNode.right} else {return findData(currentNode.right,searchnode)}
+        }
+    }
+  }
+ 
+
+  remove(data) {
+    if (this.has(data)) {
+      this.first = removeNode(this.first,data)
+    }
+    function removeNode(currentNode,removedata) {
+      if (removedata<currentNode.data) {
+        currentNode.left=removeNode(currentNode.left,removedata);
+        return currentNode;
+      }
+      else if (removedata>currentNode.data) {
+        currentNode.right=removeNode(currentNode.right,removedata)
+        return currentNode;
+      }
+      else {
+        if (currentNode.left===null & currentNode.right===null) {
+          currentNode = null;
+          return currentNode;
+        }
+        if (currentNode.left===null) {
+          currentNode=currentNode.right;
+          return currentNode;
+        }
+        if (currentNode.right === null) {
+          currentNode=currentNode.left;
+          return currentNode;
+        }
+
+        let minRightNode = currentNode.right;
+        while (minRightNode.left) {
+          minRightNode=minRightNode.left;
+        }
+        currentNode.data=minRightNode.data;
+        currentNode.right = removeNode(currentNode.right,minRightNode.data)
+        return currentNode;
+      }
+    }
   }
 
   min() {
